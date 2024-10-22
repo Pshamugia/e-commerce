@@ -1,0 +1,416 @@
+ #im {
+     transition: all .2s ease-in-out;
+ }
+
+ .cover {
+     width: 100%;
+     height: 250px;
+     object-fit: cover;
+ }
+
+ .cover:hover {
+     transform: scale(1.0);
+     /* rotate(2.1deg) */
+     opacity: 0.7;
+     filter: alpha(opacity=70);
+     transition: all .7s;
+     cursor: pointer;
+ }
+
+ .overlay-section {
+    position: relative;
+    height: 300px; /* Adjust height as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5); /* Overlay effect */
+}
+
+.overlay-section .fixed-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("{{ asset('uploads/book1.jpg') }}") no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed; /* Fixes the background within this section */
+    z-index: -1; /* Ensure it stays behind the content */
+}
+
+.overlay-content {
+    position: relative;
+    z-index: 1;
+}
+
+.overlay-content h2, .overlay-content p, .overlay-content a {
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+
+
+.hero-section {
+    background: url("{{ asset('uploads/book3.jpg') }}") no-repeat center center; /* Replace with your image path */
+    background-size: cover;
+    background-attachment: fixed; /* Keeps the background image fixed */
+    height: 250px; /* Adjust height as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+  
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Adjust overlay color/opacity */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    margin-top: 13px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+
+.section-title {
+    font-size: 24px; /* Increase font size for better visibility */
+    color: #2c3e50; /* Darker color for better contrast */
+    padding-bottom: 20px;
+    display: flex;
+    align-items: left;
+    justify-content: center; /* Center the title */
+     padding: 10px;
+    position: relative; 
+    text-transform: uppercase; /* Make the text uppercase for emphasis */
+    letter-spacing: 1px; /* Add a bit of letter spacing */
+}
+
+/* Add a fancy icon before the text */
+.section-title i {
+    font-size: 28px; /* Increase icon size */
+    color: #3498db; /* Make the icon stand out */
+    margin-right: 10px; /* Add some space between icon and text */
+}
+
+/* Add a subtle background effect */
+.section-title::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(to right, #ccc, #3498db);
+    bottom: 0;
+    left: 0;
+    z-index: -1; /* Send the background effect behind the text */
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.5s ease;
+}
+
+.section-title:hover::before {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+
+
+.section-title-1 {
+    font-size: 26px;
+    color: white;
+    background: linear-gradient(135deg, #3498db, #8e44ad); /* Gradient background */
+    padding: 10px 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    display: inline-block; /* Keep it to the size of content */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+}
+
+/* Style the icon */
+.section-title-1 i {
+    font-size: 30px;
+    margin-right: 8px;
+}
+
+
+
+.section-title-2 {
+    font-size: 28px;
+    color: #333;
+    padding-bottom: 10px;
+    border-bottom: 4px double #3498db; /* Fancy double border underline */
+    display: inline-block;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Style the icon */
+.section-title-2 i {
+    font-size: 32px;
+    color: #3498db; /* Color to match the underline */
+    margin-right: 6px;
+}
+
+
+.animated-title {
+    font-size: 26px;
+    color: white;
+    background: linear-gradient(135deg, #3498db, #8e44ad);
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    position: relative;
+    overflow: hidden;
+    transition: background-position 0.5s ease, transform 0.3s;
+    background-size: 200% 200%; /* Double the size for gradient animation */
+    background-position: 0% 50%; /* Start at the left */
+}
+
+/* Add a hover effect with a subtle scale and gradient shift */
+.animated-title:hover {
+    transform: scale(1.05);
+    background-position: 100% 50%; /* Move gradient to the right */
+}
+
+/* Style the icon with a slight animation */
+.animated-title i {
+    font-size: 30px;
+    margin-right: 10px;
+    animation: bounce 1.2s infinite;
+}
+
+/* Bouncing animation for the icon */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+
+
+
+
+.animated-title {
+    font-size: 28px;
+    color: #fff;
+    padding: 15px 30px;
+    display: inline-block;
+    background-color: #3498db;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    animation: slide-in 1.5s ease-out forwards, color-pulse 3s infinite;
+    transition: transform 0.3s, background-color 0.5s;
+}
+
+/* Hover effect */
+.animated-title:hover {
+    background-color: #e74c3c;
+    transform: scale(1.05);
+}
+
+/* Sliding animation */
+@keyframes slide-in {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Color pulsing effect */
+@keyframes color-pulse {
+    0%, 100% { box-shadow: 0 0 10px #3498db, 0 0 30px #3498db; }
+    50% { box-shadow: 0 0 20px #e74c3c, 0 0 40px #e74c3c; }
+}
+
+.popular-book-item {
+    font-size: 16px;
+    padding: 5px 0;
+}
+
+.book-number {
+    font-weight: bold; 
+}
+
+.book-title {
+    font-weight: bold;
+}
+
+.book-author {
+    color: #555; /* Dark gray for the author name */
+    font-style: italic;
+}
+
+.book-details {
+    font-size: 14px;
+    color: #777; /* Lighter gray for additional details */
+}
+
+/* Optional: Customize the card appearance */
+.card.mb-3 {
+    background-color: #f9f9f9; /* Light background color */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.card h5 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.read-more-link {
+    color: #3498db;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.3s; 
+    float: right;
+}
+
+.read-more-link i {
+    margin-left: 5px; /* Add space between text and icon */
+    font-size: 16px; /* Adjust icon size */
+    transition: transform 0.3s;
+}
+
+.read-more-link:hover {
+    color: #2c3e50; /* Darker color on hover */
+}
+
+.read-more-link:hover i {
+    transform: translateX(5px); /* Slide icon to the right on hover */
+}
+
+
+
+.navbar {
+    transition: background-color 0.3s ease, top 0.3s ease;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999; 
+    background-color: #F3F4F6 !important;
+ }
+
+.navbar.scrolled {
+    background-color: #cccccc !important; /* Ensure the new background is applied */
+    box-shadow: 0px 6px 8px rgba(0,0,0,0.1); /* Add a subtle shadow for emphasis */
+}
+
+@font-face {
+    font-family: 'liFont';
+    src: url('../fonts/bpg-glaho-web-caps-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+   
+}
+li, input, button  {
+    font-family: 'liFont', sans-serif !important; 
+}
+
+.styled-input::placeholder {
+     line-height: 1.5; /* Adjust the line height to move the placeholder */
+    transform: translateY(3px); /* Move the placeholder text down */
+
+}
+
+@font-face {
+    font-family: 'h1Font';
+    src: url('../fonts/alk-tommaso-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+h1, h5, h2 {
+    font-family: 'h1Font', sans-serif !important;
+}
+
+@font-face {
+    font-family: 'h4Font';
+    src: url('../fonts/bpg-glaho-web-caps-webfont.ttf') format('truetype');
+    font-weight: bolder;
+    font-style: normal; 
+}
+h4  {
+    font-family: 'h4Font', sans-serif !important;     
+    font-size: 1.125rem; /* 1 rem = the root font size (usually 16px, so 1.125rem = 18px) */
+
+}
+
+
+.fb-icon {
+    color:white;
+    margin-right: 10px;
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.fb-icon:hover {
+    color: blue; /* Change to your desired hover color */
+    transform: scale(1.2); /* Slightly increase the size on hover */
+}
+
+.insta-icon {
+    color:white;
+    margin-right: 10px;
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.insta-icon:hover {
+    background: #833ab4;
+    background: linear-gradient(
+      to right,
+      #833ab4,#fd1d1d,#fcb045
+    );    transform: scale(1.2); /* Slightly increase the size on hover */
+}
+ 
+.youtube-icon {
+    color:white;
+    margin-right: 10px;
+     top: 3px;
+    position: relative;
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.youtube-icon:hover {
+    color: #FF0000; /* Change to your desired hover color */
+    transform: scale(1.2); /* Slightly increase the size on hover */
+}
+ 
+
+
+
+
