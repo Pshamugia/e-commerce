@@ -9,10 +9,28 @@
         <!-- Book Image -->
         <div class="col-md-5">
             @if($book->photo)
-            <img src="{{ asset('storage/' . $book->photo) }}" alt="{{ $book->title }}" class="img-fluid" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" id="thumbnailImage">
-            @else
+            <div style="background-color: rgb(136, 136, 136)">
+            <img src="{{ asset('storage/' . $book->photo) }}" alt="{{ $book->title }}" class="img-fluid" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" id="thumbnailImage" style="display: flex; align-self: center; align-content: center">
+            </div>  @else
                 <img src="{{ asset('public/uploads/default-book.jpg') }}" alt="Default Image" class="img-fluid rounded shadow">
             @endif
+            <div class="share-buttons col-md-12" style="text-align:left; margin-top: 20px;">
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(Request::fullUrl()) }}" target="_blank" class="btn facebook-btn">
+                    <i class="bi bi-facebook"></i>  
+                </a>
+            
+                <!-- Twitter -->
+                <a href="https://twitter.com/intent/tweet?url={{ urlencode(Request::fullUrl()) }}&text=Check this out!" target="_blank" class="btn twitter-btn">
+                    <i class="bi bi-twitter"></i>  
+                </a>
+            
+                <!-- WhatsApp -->
+                <a href="https://api.whatsapp.com/send?text=Check this out! {{ urlencode(Request::fullUrl()) }}" target="_blank" class="btn whatsapp-btn">
+                    <i class="bi bi-whatsapp"></i>  
+                </a>
+            </div>
+            
         </div>
 
         <!-- Book Details -->
@@ -41,38 +59,38 @@
 <!-- Add to Cart Button -->
 @if (in_array($book->id, $cartItemIds))
     <button class="btn btn-success toggle-cart-btn" data-product-id="{{ $book->id }}" data-in-cart="true">
-        დამატებულია
+        <span style="top: 3px !important; position: relative;"> დამატებულია </span>
     </button>
 @else
     <button class="btn btn-primary toggle-cart-btn" data-product-id="{{ $book->id }}" data-in-cart="false">
-        დაამატე კალათაში
+        <span style="top: 3px !important; position: relative;"> დაამატე კალათაში </span>
     </button>
 @endif
 
             <!-- Book Description -->
             <div class="mt-4">
                 <h4>აღწერა</h4>
-                <p>{{ $book->description ?? 'აღწერა არ არის დამატებული.' }}</p>
+                <p style="padding-bottom: 10px;">{{ $book->description ?? 'აღწერა არ არის დამატებული.' }}</p>
 
                 <h4> დეტალები </h4>
 
-                <table class="table table-striped table-hover">
+                <table class="table table-bordered table-hover" style="margin-top:20px; position: relative;">
                      
                     <tbody>
                       <tr>
-                        <td>გვერდების რაოდენობა</td>
+                        <td><strong> გვერდების რაოდენობა</strong></td>
                          <td>{{ $book->pages }}</td>
                       </tr>
                       <tr>
-                         <td>გამოცემის თარიღი</td>
+                         <td><strong>გამოცემის თარიღი</strong></td>
                          <td>{{ $book->publishing_date }} წელი </td>
                       </tr>
                       <tr>
-                         <td>ყდა</td>
+                         <td><strong>ყდა</strong></td>
                          <td>{{ $book->cover }}</td>
                       </tr>
                       <tr>
-                        <td>მდგომარეობა</td>
+                        <td><strong>მდგომარეობა</strong></td>
                         <td>{{ $book->status }}</td>
                      </tr>
                     </tbody>
@@ -93,7 +111,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img src="{{ asset('storage/' . $book->photo) }}" alt="{{ $book->title }}" class="img-fluid" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" id="thumbnailImage">
+                <img src="{{ asset('storage/' . $book->photo) }}" alt="{{ $book->title }}" class="img-fluid image-and-share-container" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" id="thumbnailImage">
             </div>
         </div>
     </div>

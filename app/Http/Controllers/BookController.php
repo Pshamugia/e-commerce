@@ -205,7 +205,15 @@ class BookController extends Controller
 
     $author = Author::get();
 
-    return view('search', compact('books', 'author', 'searchTerm', 'search_count'));
+    $cartItemIds = [];
+        if (Auth::check()) {
+            $cart = Auth::user()->cart;
+            if ($cart) {
+                $cartItemIds = $cart->cartItems->pluck('book_id')->toArray(); // Get all book IDs in the user's cart
+            } 
+        }
+
+    return view('search', compact('books', 'author', 'searchTerm', 'cartItemIds', 'search_count'));
 }
 
     

@@ -409,8 +409,133 @@ h4  {
     color: #FF0000; /* Change to your desired hover color */
     transform: scale(1.2); /* Slightly increase the size on hover */
 }
+
+.circle {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    font-size: 12px;
+    background-color: #be0a0a;
+    color: white;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 50%; 
+    position: absolute; /* Allows positioning based on parent */
+    top: -4px; /* Move down by 50px */  
+    margin-left:-5px;
+}
+
  
 
 
+.hr-with-text {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #333;
+    margin: 20px 0;
+}
+
+.hr-with-text::before,
+.hr-with-text::after {
+    content: '';
+    flex: 1;
+    border-bottom: 2px solid #333;
+    margin-top: -25px;
+}
+
+.hr-with-text:not(:empty)::before {
+    margin-right: 10px;
+}
+
+.hr-with-text:not(:empty)::after {
+    margin-left: 10px;
+}
+
+/* Animation on hover */
+.hr-with-text:hover::before,
+.hr-with-text:hover::after {
+    border-bottom: 2px solid rgb(45, 131, 218); /* Change color on hover */
+    transition: width 0.4s ease-in-out, border-color 0.4s ease-in-out;
+}
+
+.hr-with-text:hover::before {
+    width: 120%;
+}
+
+.hr-with-text:hover::after {
+    width: 120%;
+}
 
 
+
+.book-card {
+    transition: all 0.3s ease; /* Smooth transition for the border */
+    border: 1px solid #dbdbdb; /* Initial border is transparent */
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+/* Hover effect: when hovered, the border color changes */
+.book-card:hover {
+    border: 1px solid #3498db; /* Change to any color you'd like */
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+
+/* Container for both image and buttons */
+.image-and-share-container {
+    max-width: 100%; /* Make it responsive */
+    text-align: center; /* Center the buttons */
+    margin-top: 20px;
+}
+
+/* Make the buttons full width and align */
+.share-buttons {
+    display: flex;
+    justify-content: space-around; /* Spread the buttons evenly */
+    max-width: 100%; /* Keep it responsive */
+    gap: 10px; /* Add space between the buttons */
+}
+/* General Styles for All Share Buttons */
+/* Style for individual buttons to take equal width */
+.share-buttons a {
+    flex: 1; /* Make each button take equal width */
+    text-align: center;
+    padding: 15px;
+    border-radius: 5px;
+    color: white;
+    transition: background-color 0.3s ease;
+    display: inline-block; 
+    font-size: 20px;
+}
+
+/* Facebook Button */
+.facebook-btn {
+    background-color: #3b5998;
+    border: none;
+    
+}
+
+.facebook-btn:hover {
+    background-color: #2d4373;
+}
+
+/* Twitter Button */
+.twitter-btn {
+    background-color: #1da1f2;
+    border: none;
+}
+
+.twitter-btn:hover {
+    background-color: #1a91da;
+}
+
+/* WhatsApp Button */
+.whatsapp-btn {
+    background-color: #25d366;
+    border: none;
+}
+
+.whatsapp-btn:hover {
+    background-color: #20b358;
+}

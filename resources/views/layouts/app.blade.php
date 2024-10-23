@@ -3,12 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="{{ $book->title ?? 'Your Website Title' }}">
+    <meta property="og:description" content="{{ $book->description ?? 'Your default description.' }}">
+    <meta property="og:url" content="{{ Request::fullUrl() }}">
+    <meta property="og:image" content="{{ asset('storage/' . ($book->photo ?? 'default.jpg')) }}">
+    <meta property="og:site_name" content="Your Website Name">
     <title>@yield('title', 'Bukinistebi.ge')</title>
-    <meta name="description" content="Find your favorite books at the best prices. Browse fiction, non-fiction, educational books, and more!">
-    <meta name="keywords" content="buy books, bookshop, online book store, fiction books, non-fiction books">
-    <meta name="robots" content="index, follow">
+
+    <!-- Twitter Card Meta Tags (Optional) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $book->title ?? 'Your Website Title' }}">
+    <meta name="twitter:description" content="{{ $book->description ?? 'Your default description.' }}">
+    <meta name="twitter:image" content="{{ asset('storage/' . ($book->photo ?? 'default.jpg')) }}">
+ <meta name="robots" content="index, follow">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link rel="icon" href="{{ asset('uploads/favicon/favicon.png') }}" type="image/x-icon">
@@ -43,7 +53,7 @@
                     @endphp
                      <!-- Cart Link in the Navbar -->
 <a class="nav-link" href="{{ route('cart.show') }}">
-    კალათა (<span id="cart-count">{{ $cartCount }}</span>)
+    კალათა <span id="cart-count" class="circle">{{ $cartCount }}</span>
 </a>
                     </li>
 
@@ -52,7 +62,7 @@
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" 
                            data-bs-toggle="dropdown" aria-expanded="false" v-pre>
-                           <i class="bi bi-file-earmark-person"></i>   შესვლა
+                           <i class="bi bi-file-earmark-person" style="position: relative; top:-2px; font-size: 14px"></i>   შესვლა
                         </a>
             
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="width: 15vw;">
@@ -72,7 +82,7 @@
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" 
                                data-bs-toggle="dropdown" aria-expanded="false" v-pre>
-                               <i class="bi bi-file-earmark-person"></i>   {{ Auth::user()->name }}
+                               <i class="bi bi-file-earmark-person" style="position: relative; top:-2px; font-size: 14px"></i>   {{ Auth::user()->name }}
                             </a>
                 
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">

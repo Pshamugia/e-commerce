@@ -17,55 +17,66 @@
     @endif
 
     @if(!$cart || $cart->cartItems->isEmpty())
-        <p>შენი კალათა ცარიელია.</p>
+    <div class="empty-cart text-center" style="padding: 50px;">
+        <i class="bi bi-cart-x-fill" style="font-size: 64px; color: #ff6b6b;"></i> <!-- Cart icon from Bootstrap Icons -->
+        <h3 style="color: #2c3e50; margin-top: 20px;">შენი კალათა ცარიელია.</h3>
+        <p style="color: #7f8c8d;">შეგიძლია დაამატო წიგნები კალათაში</p>
+        <a href="{{ route('books') }}" class="btn btn-primary mt-3">
+            წიგნების ნახვა
+        </a>
+    </div>
     @else
-        <table class="table table-hover table-bordered">
-            <thead>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 80px; text-align: center; vertical-align: middle;">ყდა</th>
+                <th style="text-align: center; vertical-align: middle;">დასახელება</th>
+                <th style="text-align: center; vertical-align: middle;">ავტორი</th>
+                 <th style="text-align: center; vertical-align: middle;">რაოდენობა</th>
+                <th style="text-align: center; vertical-align: middle;">ფასი</th>
+                <th style="text-align: center; vertical-align: middle;">ქმედება</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($cart->cartItems as $item)
                 <tr>
-                    <th style="width: 80px">ყდა</th>
-                    <th>დასახელება</th>
-                    <th>ავტორი</th>
-                    <th>ფასი</th>
-                    <th>რაოდენობა</th>
-                    <th>სრული ფასი</th>
-                    <th>ქმედება</th>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <img src="{{ asset('storage/' . $item->book->photo) }}" alt="{{ $item->book->title }}" width="80px" height="100px" class="img-fluid shadow">
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <a href="{{ route('full', ['title' => Str::slug($item->book->title), 'id' => $item->book->id]) }}" class="card-link">
+                            {{ $item->book->title }}
+                        </a>
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">{{ $item->book->author->name }}</td>
+                     <td style="text-align: center; vertical-align: middle;">{{ $item->quantity }}</td>
+                    <td style="text-align: center; vertical-align: middle;">{{ number_format($item->price * $item->quantity) }} ლარი</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <form action="{{ route('cart.remove', ['book' => $item->book_id]) }}" method="POST" onsubmit="return confirm('ნამდვილად გსურს წაშლა?');">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-danger btn-sm">წაშლა კალათიდან</button>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($cart->cartItems as $item)
-                    <tr>
-                        <td><img src="{{ asset('storage/' . $item->book->photo) }}" alt="{{ $item->book->title }}" width="80px" height="100px" class="img-fluid shadow"></td>
-                        <td>{{ $item->book->title }}</td>
-                        <td>{{ $item->book->author->name }}</td>
-                        <td>{{ number_format($item->price) }} ლარი</td>
-                        <td>{{ $item->quantity }}</td>
-                        <td>{{ number_format($item->price * $item->quantity) }} ლარი</td>
-                        <td>
-                        
+            @endforeach
+            <tr style="background-color: #c40b0b; color:white">
+                <td colspan="5" style="text-align: right; vertical-align: middle; font-weight: bold;">სრული თანხა:</td>
+                <td rowspan="{{ $cart->cartItems->count() }}" style="text-align: center; vertical-align: middle;">
+                    <h3 style="text-align: center; vertical-align: middle; top:2px; position: relative; font-size: 20px">{{ number_format($total) }} ლარი</h3>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
 
-                            <form action="{{ route('cart.remove', ['book' => $item->book_id]) }}" method="POST" onsubmit="return confirm('ნამდვილად გსურს წაშლა?');">
-                                @csrf
-                                <button type="submit" class="btn btn-danger btn-sm">წაშლა კალათიდან</button>
-                            </form>
-                            
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <div class="mt-4" style="position: relative; top:-10px">
-             
-            <h4>სრული თანხა: {{ number_format($total) }} ლარი</h4>
-        </div>
-
+      
 
 
         <div style="padding: 7px 33px 10px 33px; background-color: rgb(154, 181, 238); border:1px solid #837979"> 
         <!-- Payment Method and Personal Info Form -->
         <form action="{{ route('checkout') }}" method="POST">
             @csrf
-            <h5 class="mt-4" style="padding-bottom: 15px">აირჩიე გადახდის მეთოდი:</h5>
+            <h4 class="mt-4" style="bottom: -5px"> <strong> აირჩიე გადახდის მეთოდი: </strong></h4>
 
             <!-- Radio buttons for payment -->
             <div class="form-check">
@@ -84,22 +95,22 @@
             <!-- User details -->
             <div class="mt-4" >
                  <div class="mb-3">
-                    <label for="name" class="form-label">სახელი და გვარი</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+                    <label for="name" class="form-label" style="position: relative; top:10px"><h4><strong> სახელი და გვარი </strong> </h4></label>
+                    <input type="text" class="form-control" placeholder="სახელი გვარი" id="name" name="name" required>
                 </div>
                 <div class="mb-3">
-                    <label for="phone" class="form-label">ტელეფონის ნომერი</label>
-                    <input type="text" class="form-control" id="phone" name="phone" required>
+                    <label for="phone" class="form-label" style="position: relative; top:10px"><h4><strong>  ტელეფონის ნომერი </strong></h4></label>
+                    <input type="text" class="form-control" id="phone" placeholder="აქ ჩაწერე შენი მოქმედი ტელეფონი, რომ კურიერმა შეძლოს დაკავშირება" name="phone" required>
                 </div>
                 <div class="mb-3">
-                    <label for="address" class="form-label">მისამართი</label>
-                    <input type="text" class="form-control" id="address" name="address" required>
+                    <label for="address" class="form-label" style="position: relative; top:10px"><h4><strong> მისამართი </strong></h4></label>
+                    <input type="text" class="form-control" id="address" name="address" placeholder="აქ ჩაწერე ზუსტი მისამართი, სადაც პროდუქცია უნდა მოგიტანოთ" required>
                 </div>
             </div>
 
             <!-- Conditional button for bank transfer -->
             <div class="mt-4">
-                <button type="submit" class="btn btn-primary" id="courier_order_btn" style="display: none;">კურიერთან გადახდა</button>
+                <button type="submit" class="btn btn-danger" id="courier_order_btn" style="display: none;">კურიერთან გადახდა</button>
                 <button type="submit" class="btn btn-success" id="bank_transfer_btn" style="display: none;">საბანკო გადარიცხვა</button>
             </div>
         </form>

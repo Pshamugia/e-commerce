@@ -19,7 +19,8 @@
         </div>
         <div class="form-group mt-3">
             <label for="full">full</label>
-            <textarea class="form-control" name="full" rows="5" required>{{ $bookNews->full }}</textarea>
+            
+            <textarea class="form-control" name="full" rows="5"  id="full"  required>{{ $bookNews->full }}</textarea>
         </div>
 
         <div class="form-group mt-3">
@@ -36,4 +37,11 @@
         <button type="submit" class="btn btn-primary mt-3">Update</button>
     </form>
 </div>
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+
+<script>
+    // Replace the <textarea> with a CKEditor instance
+    CKEDITOR.replace('full');
+</script>
 @endsection
+

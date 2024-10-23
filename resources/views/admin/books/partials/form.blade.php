@@ -89,6 +89,12 @@
  
 <!-- Chosen JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+
+<script>
+    // Replace the <textarea> with a CKEditor instance
+    CKEDITOR.replace('full');
+</script>
 
 <!-- Initialize Chosen -->
 <script>

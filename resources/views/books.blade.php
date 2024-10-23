@@ -25,16 +25,15 @@
                 </a>
             <div class="card-body">
                 <h4 ><strong> {{ $book->title }} </strong></h4>
-                <p class="card-text">{{ number_format($book->price) }} ლარი</p>
-
+                <p style="font-weight: bold; font-size: 18px" class="card-text">{{ number_format($book->price) }} <span style="color:#ccc"> &#x20BE; </span></p>
 
                 @if (in_array($book->id, $cartItemIds))
     <button class="btn btn-success toggle-cart-btn" data-product-id="{{ $book->id }}" data-in-cart="true">
-        დამატებულია
+        <span style="top: 3px !important; position: relative;"> დამატებულია </span>
     </button>
 @else
     <button class="btn btn-primary toggle-cart-btn" data-product-id="{{ $book->id }}" data-in-cart="false">
-        დაამატე კალათაში
+        <span style="top: 3px !important; position: relative;"> დაამატე კალათაში </span>
     </button>
 @endif
  

@@ -37,7 +37,7 @@
                         <td>
                             <form action="{{ route('admin.books.toggleVisibility', $book->id) }}" method="POST" style="display:inline;">
                                 @csrf
-                                <button type="submit" class="btn {{ $book->hide ? 'btn-danger' : 'btn-warning' }}">
+                                <button type="submit" class="btn {{ $book->hide ? 'btn-danger btn-sm' : 'btn-warning btn-sm' }}">
                                     @if($book->hide)
                                         Show
                                     @else

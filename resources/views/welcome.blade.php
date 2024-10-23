@@ -14,11 +14,16 @@
  
 <!-- Featured Books -->
 <div class="container mt-5">
-    <h5 class="section-title" style="position: relative; margin-bottom: 25px; padding-bottom:25px;">
-        <strong>
-            <i class="bi bi-stack-overflow"></i> ახალი დამატებული
-        </strong>
-    </h5>
+        
+            <div class="hr-with-text">
+                <h2 style="position: relative; font-size: 26px; ">
+                    
+               ახალი დამატებული  </h2>
+                </div>
+            
+            
+        
+  
     <div class="row">
         @foreach ($books as $book)
     <div class="col-md-3" style="position: relative; padding-bottom: 25px">
@@ -26,7 +31,7 @@
                 <a href="{{ route('full', ['title' => Str::slug($book->title), 'id' => $book->id]) }}" class="card-link">
 
                     @if (isset($book->photo))
-                    <img src="{{ asset('storage/' . $book->photo) }}" alt="{{ $book->title }}" class="cover" id="im">
+                    <img src="{{ asset('storage/' . $book->photo) }}" alt="{{ $book->title }}" class="cover" id="im" style="border-radius: 5px 5px 0 0;">
             @endif
                 </a>
             <div class="card-body">
@@ -36,7 +41,7 @@
                         {{ $book->author->name }} 
                     </a> 
                 </p>
-                <p class="card-text">{{ number_format($book->price) }} ლარი</p>
+                <p style="font-weight: bold; font-size: 18px" class="card-text">{{ number_format($book->price) }} <span style="color:#ccc"> &#x20BE; </span></p>
 
                 @if (in_array($book->id, $cartItemIds))
     <button class="btn btn-success toggle-cart-btn" data-product-id="{{ $book->id }}" data-in-cart="true">
@@ -78,10 +83,12 @@
     <div class="row">
         <!-- Book News (Two Columns) -->
         <div class="col-md-8">
-            <h5 class="section-title" style="position: relative; margin-bottom: 25px; padding-bottom:25px; align-items: left;
-            justify-content: left;">
-                <strong><i class="bi bi-stack-overflow"></i> ბუკინისტური ამბები</strong></h5>
-            <div class="row">
+            
+<div class="hr-with-text">
+    <h2 style="position: relative; font-size: 26px;">
+        
+ბუკინისტური ამბები  </h2>
+    </div>            <div class="row">
                 @foreach($news as $item)
                 <div class="col-md-6">
                     <div class="card mb-3">
@@ -106,9 +113,9 @@
         <!-- Popular Books (One Column) -->
         <!-- Popular Books (One Block) -->
 <div class="col-md-4">
-    <h5 class="section-title" style="position: relative; margin-bottom: 25px; padding-bottom:25px; align-items: left;
+    <h5 class="section-title" style="position: relative; margin-bottom: 20px; padding-bottom:20px; align-items: left;
     justify-content: left;"> 
-        <strong> <i class="bi bi-stickies-fill"></i> ხშირად ნანახი </strong></h5>
+     <i class="bi bi-stickies-fill"></i> ხშირად ნანახი </h5>
     <div class="card mb-3 p-3">
         @foreach($popularBooks as $index => $book)
             <div class="popular-book-item mb-2">
@@ -120,7 +127,7 @@
                 </a>
                 <div class="book-details">
                     <span><i class="bi bi-eye"></i> {{ $book->views }} </span>   
-                    <span><i class="bi bi-credit-card-2-front"></i> {{ number_format($book->price) }} ლარი</span>
+                    <span><i class="bi bi-credit-card-2-front"></i> {{ number_format($book->price) }} &#x20BE;</span>
                 </div>
             </div>
             @if (!$loop->last)
