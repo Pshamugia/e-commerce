@@ -6,6 +6,7 @@
 
 <div class="container mt-5 col-md-6" style="position: relative; padding-top:10%; padding-bottom:5%;">
 
+ <div>   <h4> თუ ჯერ არ ხარ დარეგისტრირებული, დარეგისტრირდი  <a href="{{ route('register.publisher.form')}}"> აქ </a> </h4> </div>
     <!-- Email Errors -->
     @if ($errors->has('email'))
         <div class="alert alert-warning">

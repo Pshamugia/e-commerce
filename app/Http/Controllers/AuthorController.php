@@ -88,8 +88,8 @@ class AuthorController extends Controller
     if (Auth::check() && Auth::user()->cart) {
         $cartItemIds = Auth::user()->cart->cartItems->pluck('book_id')->toArray();
     }
-
-        return view('full_author', compact('author', 'books', 'cartItemIds'));
+    $isHomePage = false;
+        return view('full_author', compact('author', 'books', 'cartItemIds', 'isHomePage'));
 
     }
 }

@@ -27,7 +27,8 @@ class Book extends Model
         'publishing_date',
         'pages',
         'cover',
-        'hide'
+        'hide',
+        'uploader_id'
     ];
 
     // Relationships

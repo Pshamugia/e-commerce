@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @section('title', $author->name . ' - Author Details')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
 @section('content')
+ 
 <div class="container mt-5">
   
 
     <!-- Display Author's Bio or Description if available -->
   
 
-    <h5 style="position: relative; padding-top: 44px; padding-bottom: 25px"> 
+    <h5 style="position: relative; padding-top: 65px; padding-bottom: 25px"> 
         <i class="bi bi-person-circle"></i>
         {{ $author->name }}
     </h5>

@@ -1,12 +1,11 @@
 @extends('layouts.app')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
+ 
 @section('content')
 
      
 <h5 class="section-title" style="position: relative; margin-bottom:25px; padding-top:55px; padding-bottom:25px; align-items: left;
     justify-content: left;">     <strong>
-        <i class="bi bi-stack-overflow"></i> წიგნები
+        <i class="bi bi-bookmarks-fill"></i> წიგნები
     </strong>
 </h5>
 
@@ -48,7 +47,7 @@
     {{ $books->links('pagination.custom-pagination') }}
 </div>
 @endsection
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 @section('scripts')
 <script>
@@ -63,7 +62,6 @@
 
 
 
-@endsection
 
 <script>
     $(document).ready(function() {
@@ -106,3 +104,5 @@
   
   
   </script>
+
+@endsection

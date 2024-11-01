@@ -25,46 +25,40 @@ class BookController extends Controller
         return view('admin.books.create', compact('authors', 'categories', 'books'));
     }
 
-    public function store(Request $request) 
+    public function store(Request $request)
 {
-    // Validate the form, including the new fields
+    // Validate the form
     $validatedData = $request->validate([
         'title' => 'required|string|max:255',
         'price' => 'required|numeric',
-        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate the photo field
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         'description' => 'required|string',
-        'quantity' => 'integer|min:1', // Validate quantity
-        'views' => 'nullable|integer', 
+        'quantity' => 'integer|min:1',
         'full' => 'required|string',
         'author_id' => 'required|exists:authors,id',
         'category_id' => 'required|exists:categories,id',
-        'status' => 'nullable|string', // Adding validation for status
-        'pages' => 'nullable|string|max:255', // Adding validation for pages
-        'publishing_date' => 'nullable|string', // Adding validation for publishing date
-        'cover' => 'nullable|string|max:255', // Adding validation for cover type
+        'status' => 'nullable|string',
+        'pages' => 'nullable|string|max:255',
+        'publishing_date' => 'nullable|string',
+        'cover' => 'nullable|string|max:255',
     ]);
 
-    // Check if the file is being received correctly
+    // Handle file upload
     if ($request->hasFile('photo')) {
         $imageName = $request->file('photo')->hashName();
-        
-        // Store the file in the "uploads/books" directory within "public storage"
         $path = $request->file('photo')->storeAs('uploads/books', $imageName, 'public');
-    
-        // Check if file was stored
-        if (!$path) {
-            return back()->with('error', 'File could not be saved.');
-        }
-    
-        // Store only the relative path in the database without "public/"
         $validatedData['photo'] = 'uploads/books/' . $imageName;
     }
 
-    // Create a new book record with the validated data
+    // Add uploader_id to the validated data
+    $validatedData['uploader_id'] = auth()->id(); // Set the uploader_id to the logged-in publisher's ID
+
+    // Create a new book record
     Book::create($validatedData);
 
-    return redirect()->route('admin.books.index')->with('success', 'Book created successfully.');
+    return redirect()->route('publisher.dashboard')->with('success', 'Book uploaded and awaiting admin approval.');
 }
+
 
     
 
@@ -128,6 +122,6 @@ class BookController extends Controller
     $book->hide = !$book->hide; // Toggle the hide status
     $book->save();
 
-    return redirect()->back()->with('success', 'მასალა დამალულია.');
+    return redirect()->back()->with('success', 'მასალა წარმატებით განახლდა.');
 }
 }

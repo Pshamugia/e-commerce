@@ -27,8 +27,8 @@ class CartController extends Controller
     }
 
     $total = $subtotal + $shipping;
-
-    return view('cart', compact('cart', 'subtotal', 'shipping', 'total'));
+    $isHomePage = false;
+    return view('cart', compact('cart', 'subtotal', 'shipping', 'total', 'isHomePage'));
 }
 
 
@@ -75,7 +75,7 @@ class CartController extends Controller
         $cart = Auth::user()->cart;
 
         if (!$cart) {
-            return redirect()->route('cart.show')->with('error', 'შნი კალათა ცარიელია.');
+            return redirect()->route('cart.show')->with('error', 'შენი კალათა ცარიელია.');
         }
 
         // Find the cart item by book ID and remove it
@@ -91,60 +91,66 @@ class CartController extends Controller
     /**
      * Update the quantity of a book in the cart.
      */
-    public function updateQuantity(Request $request, $bookId)
+    public function updateQuantity(Request $request)
     {
-        // Validate the input for quantity
-        $request->validate([
-            'quantity' => 'required|integer|min:1',
-        ]);
-
-        // Get the user's cart
-        $cart = Auth::user()->cart;
-
-        if (!$cart) {
-            return redirect()->route('cart.show')->with('error', 'შენი კალათ ცარიელია.');
-        }
-
-        // Find the cart item by book ID
-        $cartItem = $cart->cartItems()->where('book_id', $bookId)->first();
+        $cartItem = CartItem::where('book_id', $request->book_id)->first();
 
         if ($cartItem) {
-            $cartItem->quantity = $request->input('quantity');
+            if ($request->action === 'increase' && $cartItem->book->quantity > $cartItem->quantity) {
+                $cartItem->quantity += 1;
+            } elseif ($request->action === 'decrease' && $cartItem->quantity > 1) {
+                $cartItem->quantity -= 1;
+            }
+    
             $cartItem->save();
+    
+            return response()->json(['success' => true]);
         }
-
-        return redirect()->route('cart.show')->with('success', 'Cart updated.');
+    
+        return response()->json(['success' => false], 400);
+    
     }
 
     public function toggle(Request $request)
-    {
-        $bookId = $request->input('book_id');
-        $quantity = $request->input('quantity', 1); // Get quantity or default to 1
-        $cart = Auth::user()->cart;
-    
-        // Check if the book is already in the cart
-        $cartItem = $cart->cartItems()->where('book_id', $bookId)->first();
-    
-        if ($cartItem) {
-            // If it's in the cart, remove it
-            $cartItem->delete();
-            $action = 'removed';
-        } else {
-            // If it's not in the cart, add it with the quantity
-            $cart->cartItems()->create([
-                'book_id' => $bookId,
-                'quantity' => $quantity,
-                'price' => Book::find($bookId)->price,
-            ]);
-            $action = 'added';
-        }
-    
-        return response()->json([
-            'success' => true,
-            'action' => $action,
-            'cart_count' => $cart->cartItems->count(),
-        ]);
+{
+    $bookId = $request->input('book_id');
+    $quantity = $request->input('quantity', 1); // Default quantity to 1
+
+    $user = Auth::user();
+    $cart = $user->cart ?? $user->cart()->create(); // Ensure cart exists or create it
+
+    // Verify that the book exists
+    $book = Book::find($bookId);
+    if (!$book) {
+        return response()->json(['success' => false, 'message' => 'Book not found.']);
     }
+
+    // Check if the book is already in the cart
+    $cartItem = $cart->cartItems()->where('book_id', $bookId)->first();
+
+    if ($cartItem) {
+        // If it's in the cart, remove it
+        $cartItem->delete();
+        $action = 'removed';
+    } else {
+        // If it's not in the cart, add it with the specified quantity
+        $cart->cartItems()->create([
+            'book_id' => $bookId,
+            'quantity' => $quantity,
+            'price' => $book->price,
+        ]);
+        $action = 'added';
+    }
+
+    return response()->json([
+        'success' => true,
+        'action' => $action,
+        'cart_count' => $cart->cartItems->count(),
+    ]);
+}
+
+
+    
     
 
 }

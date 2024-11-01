@@ -2,6 +2,9 @@
 
 namespace App\Http;
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Console\Scheduling\Schedule;
+use App\Http\Controllers\TbcCheckoutController;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -49,7 +52,25 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         // Other middleware...
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
+
     ];
+
+
+    protected function schedule(Schedule $schedule)
+{
+
+    $schedule->call(function () {
+        Log::info('Scheduler running');
+        app(TbcCheckoutController::class)->getAccessToken();
+    })->everyTwentyThreeHours();
+
+    
+    $schedule->call(function () {
+        app(TbcCheckoutController::class)->getAccessToken();
+    })->everyTwentyThreeHours();
+    
+}
 
     /**
      * The application's middleware aliases.

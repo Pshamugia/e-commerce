@@ -45,4 +45,31 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+
+    public function createPublisherLoginForm()
+{
+    return view('auth.login-publisher');
+}
+
+public function storePublisherLogin(Request $request)
+{
+    $credentials = $request->only('email', 'password');
+    
+    if (Auth::attempt($credentials)) {
+        if (Auth::user()->role == 'publisher') {
+            return redirect()->route('publisher.create'); // Redirect to the publisher dashboard or upload page
+        } else {
+            Auth::logout(); // If logged-in user is not a publisher, log them out
+            return redirect()->route('login.publisher.form')->withErrors([
+                'email' => 'Only publishers can log in here.',
+            ]);
+        }
+    }
+
+    return back()->withErrors([
+        'email' => 'The provided credentials do not match our records.',
+    ]);
+}
+
 }

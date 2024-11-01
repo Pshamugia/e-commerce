@@ -48,4 +48,36 @@ class RegisteredUserController extends Controller
 
         return redirect('/'); // Change this to your desired redirect path
     }
+
+
+    public function createPublisherForm()
+    {
+        return view('auth.register-publisher');
+    }
+    
+    public function storePublisher(Request $request)
+{
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'phone' => 'required|string|max:15',
+        'password' => 'required|string|min:8|confirmed',
+        'address' => 'required|string|max:255'
+    ]);
+
+    $user = User::create([
+        'name' => $validatedData['name'],
+        'email' => $validatedData['email'],
+        'phone' => $validatedData['phone'],
+        'password' => Hash::make($validatedData['password']),
+        'address' => $validatedData['address'],
+        'role' => 'publisher'
+    ]);
+
+    Auth::login($user);
+
+    return redirect()->route('publisher.dashboard')->with('success', 'რეგისტრაცია წარმატებით განხორციელდა.');
+}
+
+    
 }
