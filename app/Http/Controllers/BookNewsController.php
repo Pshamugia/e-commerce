@@ -20,24 +20,36 @@ class BookNewsController extends Controller
 
     public function show($id)
     {
-        $newsItem = BookNews::findOrFail($id);
-        return view('book_news.show', compact('newsItem'));
+        $book = BookNews::findOrFail($id);
+        return view('book_news.show', compact('booknews'));
     }
+
+    public function terms()
+    {
+        $terms = BookNews::where('title', 'წესები და პირობები')->first();
+        $bukinistebisatvis = BookNews::where('title', 'ბუკინისტებისათვის')->first();
+
+return view('terms_conditions', compact('terms', 'bukinistebisatvis'));
+
+    }
+    
+
 
     public function full_news($title, $id)
 {
     // Fetch the news article by ID
-    $newsItem = BookNews::findOrFail($id);  // Change $book to $newsItem
+    $booknews = BookNews::findOrFail($id);  // Change $book to $newsItem
 
     // Optionally, ensure the title in the URL matches the news item's actual title
-    $slug = Str::slug($newsItem->title);
+    $slug = Str::slug($booknews->title);
 
     if ($slug !== $title) {
         // Redirect to the correct URL if the slug in the URL doesn't match the actual news title
-        return redirect()->route('full_news', ['title' => $slug, 'id' => $newsItem->id]);
+        return redirect()->route('full_news', ['title' => $slug, 'id' => $booknews->id]);
     }
 
+    $isHomePage = false;
     // Pass the newsItem to the view
-    return view('full_news', compact('newsItem'));
+    return view('full_news', compact('booknews', 'isHomePage'));
 }
 }

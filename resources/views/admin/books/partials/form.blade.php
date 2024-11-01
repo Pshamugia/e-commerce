@@ -65,15 +65,18 @@
 <div class="mb-3">
   
  
-    <select name="author_id" class="chosen-select" multiple id="author_id" style="width:320px; height:35px; margin-top:35px; position: relative;" data-placeholder="მონიშნე ავტორი" required>
-        <option value=""></option> <!-- Add an empty option to trigger the placeholder -->
-        @foreach ($authors as $author)
-            <option value="{{ $author->id }}" {{ (old('author_id', $book->author_id ?? '') == $author->id) ? 'selected' : '' }}>
-                {{ $author->name }}
-            </option>
-        @endforeach
-    </select>
-</div>
+    <div class="mb-3">
+        <label for="author_id" class="form-label">Author</label>
+        <select name="author_id" class="chosen-select" id="author_id" data-placeholder="მონიშნე ავტორი" required style="width: 100%;">
+            <option value=""></option> <!-- Placeholder option -->
+            @foreach ($authors as $author)
+                <option value="{{ $author->id }}" {{ (old('author_id', $book->author_id ?? '') == $author->id) ? 'selected' : '' }}>
+                    {{ $author->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    
 <div class="mb-3">
     <label for="category_id" class="form-label">Category</label>
     <select name="category_id" class="form-select" id="category_id" required>
@@ -87,8 +90,7 @@
 </div>
 <!-- jQuery (Chosen requires jQuery) -->
  
-<!-- Chosen JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+<!-- Chosen JS --> 
 <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 
 <script>

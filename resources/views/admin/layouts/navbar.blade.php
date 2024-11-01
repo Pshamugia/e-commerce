@@ -18,6 +18,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.book-news.index') }}">Book news</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.publishers.activity') }}">ბუკინისტები</a>
+                </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 @auth

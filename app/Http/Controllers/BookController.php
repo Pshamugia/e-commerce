@@ -29,11 +29,20 @@ class BookController extends Controller
             }
         }
 
-        $news = BookNews::latest()->paginate(4);
+        $news = BookNews::where('title', '!=', 'წესები და პირობები')
+        ->where('title', '!=', 'ბუკინისტებისათვის')
+        ->latest()
+        ->paginate(4);
+    
+        
+        $bukinistebisatvis = BookNews::where('title', '!=', 'ბუკინისტებისათვის')->latest()->paginate(4);
+
         $popularBooks = Book::orderBy('views', 'desc')->take(5)->get(); // Fetch top 3 most viewed books
 
-    
-        return view('welcome', compact('books', 'cartItemIds', 'news', 'popularBooks'));
+      // Add this variable to indicate the homepage
+      $isHomePage = true;
+
+        return view('welcome', compact('books', 'cartItemIds', 'news', 'popularBooks', 'isHomePage', 'bukinistebisatvis'));
     }
 
 
@@ -52,9 +61,9 @@ class BookController extends Controller
 
         $news = BookNews::latest()->paginate(4);
         $popularBooks = Book::orderBy('views', 'desc')->take(5)->get(); // Fetch top 3 most viewed books
-
+        $isHomePage = false;
     
-        return view('books', compact('books', 'cartItemIds', 'news', 'popularBooks'));
+        return view('books', compact('books', 'cartItemIds', 'news', 'popularBooks', 'isHomePage'));
     }
 
 
@@ -99,9 +108,10 @@ class BookController extends Controller
     }
 
     $full_author = Author::first();
+    $isHomePage = false;
 
     // Pass the book to the view
-    return view('full', compact('book', 'full_author', 'cartItemIds'));
+    return view('full', compact('book', 'full_author', 'cartItemIds', 'isHomePage'));
 }
 
 
@@ -185,36 +195,68 @@ class BookController extends Controller
      * Search for books based on query.
      */
     public function search(Request $request)
-{
-    $searchTerm = $request->get('title', '');
-
-    $books = Book::where('hide', 0) // Add this condition to only fetch visible books
-        ->where(function ($query) use ($searchTerm) {
-            $query->where('title', 'like', '%' . $searchTerm . '%')
-                  ->orWhere('full', 'like', '%' . $searchTerm . '%');
-        })
-        ->orWhereHas('author', function ($query) use ($searchTerm) {
-            $query->where('name', 'like', '%' . $searchTerm . '%');
-        })
-        ->where('hide', 0) // Also apply it to author-related results
-        ->orderBy('id', 'DESC')
-        ->paginate(10)
-        ->appends(['title' => $searchTerm]);
-
-    $search_count = $books->total();
-
-    $author = Author::get();
-
-    $cartItemIds = [];
+    {
+        // Get the search term
+        $searchTerm = $request->get('title', '');
+    
+        // Start a query for books that are not hidden
+        $query = Book::where('hide', 0);
+    
+        // Apply search term filter (combine search fields inside a subquery)
+        if ($searchTerm) {
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('title', 'like', '%' . $searchTerm . '%')
+                      ->orWhere('full', 'like', '%' . $searchTerm . '%')
+                      ->orWhereHas('author', function ($query) use ($searchTerm) {
+                          $query->where('name', 'like', '%' . $searchTerm . '%');
+                      });
+            });
+        }
+    
+        // Apply price filter if provided
+        if ($request->filled('price_from')) {
+            $query->where('price', '>=', $request->input('price_from'));
+        }
+    
+        if ($request->filled('price_to')) {
+            $query->where('price', '<=', $request->input('price_to'));
+        }
+    
+        // Apply publishing year filter if provided
+        if ($request->filled('publishing_date')) {
+            $query->where('publishing_date', '=', $request->input('publishing_date'));
+        }
+        // Apply category filter if provided
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->input('category_id'));
+        }
+    
+        // Fetch the results
+        $books = $query->orderBy('id', 'DESC')
+                       ->paginate(10)
+                       ->appends($request->query());  // Keep the filters in the pagination links
+    
+        // Get the search count
+        $search_count = $books->total();
+    
+        // Fetch authors for any additional use (if needed)
+        $author = Author::get();
+        $categories = Category::all();
+    
+        // Get the cart items for the logged-in user
+        $cartItemIds = [];
         if (Auth::check()) {
             $cart = Auth::user()->cart;
             if ($cart) {
                 $cartItemIds = $cart->cartItems->pluck('book_id')->toArray(); // Get all book IDs in the user's cart
-            } 
+            }
         }
-
-    return view('search', compact('books', 'author', 'searchTerm', 'cartItemIds', 'search_count'));
-}
+    
+        $isHomePage = false;
+        // Return the view with all required data
+        return view('search', compact('books', 'author', 'searchTerm', 'cartItemIds', 'search_count', 'categories', 'isHomePage'));
+    }
+    
 
     
     

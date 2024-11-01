@@ -17,6 +17,26 @@
      cursor: pointer;
  }
 
+
+ #im_news {
+    transition: all .2s ease-in-out;
+}
+
+.cover_news {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.cover_news:hover {
+    transform: scale(1.0);
+    /* rotate(2.1deg) */
+    opacity: 0.7;
+    filter: alpha(opacity=70);
+    transition: all .7s;
+    cursor: pointer;
+}
+
  .overlay-section {
     position: relative;
     height: 300px; /* Adjust height as needed */
@@ -87,7 +107,7 @@
 .hero-content {
     position: relative;
     z-index: 2;
-    margin-top: 13px;
+     top: 12px;
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
@@ -325,6 +345,7 @@
     left: 0;
     z-index: 999; 
     background-color: #F3F4F6 !important;
+    padding-bottom:26px;
  }
 
 .navbar.scrolled {
@@ -339,7 +360,7 @@
     font-style: normal;
    
 }
-li, input, button  {
+li, input, button, select  {
     font-family: 'liFont', sans-serif !important; 
 }
 
@@ -425,7 +446,23 @@ h4  {
     margin-left:-5px;
 }
 
+ /* Adjust for mobile screens */
+@media (max-width: 768px) {
+    .circle {
+        display: none; 
+    }
+}
  
+
+/* Flexbox to center the image and text vertically and align them horizontally */
+.book-item {
+    display: flex; /* Enables flexbox */
+    align-items: center; /* Centers the content vertically */
+}
+
+.book-item img {
+    margin-right: 10px; /* Space between the image and the text */
+}
 
 
 .hr-with-text {
@@ -538,4 +575,32 @@ h4  {
 
 .whatsapp-btn:hover {
     background-color: #20b358;
+}
+
+.form-check-input[type=radio] {
+
+    border:1px solid black;
+    position: relative;
+    top: 1px;
+}
+
+div .rame
+{
+    background-color:white ;
+
+}
+
+
+
+
+ 
+@media (max-width: 768px) {
+    .deletion 
+    {
+        color:white;
+    }
+    .deletion:hover
+    {
+        color:red;
+    }
 }

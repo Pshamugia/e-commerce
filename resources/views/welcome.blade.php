@@ -1,14 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Bukinistebi.ge - Online Bookshop')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('title', 'Bukinistebi.ge - ონლაინ მაღაზია')
+
 @section('content')
+
 <!-- Hero Section -->
 <div class="hero-section" style="background: url('{{ asset('uploads/book9.jpg') }}') no-repeat center center; background-size: cover; background-attachment: fixed;">
     <div class="hero-content" style="position: relative; padding-top: 10px;">
         <h1>ბუკინისტური მაღაზია</h1>
-        <p>რასაც ეძებ - აქაა</p>
-        <a href="#" class="btn btn-outline-light">იყიდე</a>
+        <h5><a href="{{ route('books')}}" class="btn btn-outline-light" style="font-size: 18px">იპოვე</a></h5>
+        <h5><p style="font-size: 24px; position: relative; top:3px">რასაც ეძებ - აქაა</p></h5>
     </div>
 </div>
  
@@ -35,13 +36,15 @@
             @endif
                 </a>
             <div class="card-body">
-                <h4 ><strong> {{ $book->title }} </strong></h4>
+                <h4><strong> {{ $book->title }} </strong></h4>
                 <p style="font-size: 14px">
                     <a href="{{ route('full_author', ['id' =>$book->author_id, 'name' => $book->author->name])}}" style="text-decoration: none">
                         {{ $book->author->name }} 
                     </a> 
                 </p>
-                <p style="font-weight: bold; font-size: 18px" class="card-text">{{ number_format($book->price) }} <span style="color:#ccc"> &#x20BE; </span></p>
+                <p style="font-weight: bold; font-size: 18px" class="card-text">{{ number_format($book->price) }} <span style="color:#b8b5b5"> &#x20BE; </span></p>
+                
+                @if (!auth()->check() || auth()->user()->role !== 'publisher')
 
                 @if (in_array($book->id, $cartItemIds))
     <button class="btn btn-success toggle-cart-btn" data-product-id="{{ $book->id }}" data-in-cart="true">
@@ -51,6 +54,7 @@
     <button class="btn btn-primary toggle-cart-btn" data-product-id="{{ $book->id }}" data-in-cart="false">
         <span style="top: 3px !important; position: relative;"> დაამატე კალათაში </span>
     </button>
+@endif
 @endif
 <!--
 <a href="{{ route('full', ['title' => Str::slug($book->title), 'id' => $book->id]) }}" class="read-more-link">
@@ -72,8 +76,18 @@
     <div class="fixed-background" style="background: url('{{ asset('uploads/book1.jpg') }}') no-repeat center center; background-size: cover; background-attachment: fixed;"></div>
     <div class="overlay-content">
         <h2>გახდი ჩვენი პარტნიორი</h2>
-        <p>გაყიდე ბუკინისტური წიგნები ჩვენი პლატფორმიდან</p>  
-        <h2><a href="#" class="btn btn-outline-light" style="font-size: 2vw ">დაგვიკავშირდი</a></h2>
+        <p>ატვირთე ბუკინისტური წიგნები ჩვენი პლატფორმიდან</p>  
+        <h2>
+            @if(Auth::check() && Auth::user()->role === 'publisher')
+                <a href="{{ route('publisher.dashboard') }}" class="btn btn-outline-light" style="font-size: 2vw">
+                    ბუკინისტის  ოთახი
+                </a>
+            @else
+                <a href="{{ route('login.publisher') }}" class="btn btn-outline-light" style="font-size: 2vw">
+                    დარეგისტრირდი
+                </a>
+            @endif
+        </h2>
     </div>
 </div>
  
@@ -96,14 +110,13 @@
                             <a href="{{ route('full_news', ['title' => Str::slug($item->title), 'id' => $item->id]) }}" class="card-link">
 
                             @if (isset($item->image))
-                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}" class="cover img-fluid mb-2" id="im">
+                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}" class="cover img-fluid mb-2 cover_news" id="im_news">
                             @endif
                             </a>
-                            <h5 class="card-title">{{ $item->title }}</h5>
+                            <h4 class="card-title">{{ $item->title }}</h4>
 
 
-                            <p class="card-text">{{ $item->description }}</p>
-                        </div>
+                         </div>
                     </div>
                 </div>
                 @endforeach
@@ -142,9 +155,10 @@
 </div>
 @endsection
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 @section('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $.ajaxSetup({
         headers: {
@@ -154,11 +168,6 @@
 </script>
 
  
-
-
-
-@endsection
-
 <script>
     $(document).ready(function() {
       $('.toggle-cart-btn').click(function() {
@@ -200,3 +209,6 @@
   
   
   </script>
+
+
+@endsection

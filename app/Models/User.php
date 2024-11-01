@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role',
+        'name', 'email', 'password', 'role', 'address', 'phone',
     ];
 
     // Relationship with the Cart model (one cart per user)
@@ -28,5 +28,14 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function isRole($role)
+{
+    return $this->role === $role;
+}
+public function books()
+    {
+        return $this->hasMany(Book::class, 'uploader_id');
     }
 }
